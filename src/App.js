@@ -4,7 +4,6 @@ import './App.css';
 
 import Options from './DataEntryComponents/Options'
 import Field from './DataEntryComponents/Field'
-import { Z_DEFAULT_STRATEGY } from 'zlib';
 
 const fieldTypes = {
   string: <span>a string</span>,
