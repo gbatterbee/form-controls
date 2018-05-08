@@ -1,48 +1,38 @@
 import React, { Component } from 'react';
 
 export default class CheckboxList extends Component {
-  static getDerivedStateFromProps(nextProps) {
-    return { selected: nextProps.value };
-  }
 
-  constructor() {
-    super();
-    //  this.state = { selected: [] };
-  }
+  toggleCheckbox = (option) => {
+    const selectedOptions = this.props.value || [];
+    if (selectedOptions.some(v => v.value === option.value)) {
+      this.props.onFieldChange(selectedOptions.filter(v => v.value !== option.value));
+      return;
+    }
 
-  componentDidMount() {
-    // this.props.onChange([]);
-  }
-
-  toggleCheckbox = (target) => {
-    // const filteredOut = this.state.selected.filter(i => i !== target.value);
-    // if (!target.checked)
-    //   return this.props.onChange([...filteredOut]);
-
-    // this.props.onChange([...filteredOut, target.value]);
+    this.props.onFieldChange([...selectedOptions, option]);
   }
 
   render() {
-    const {
-      options, value, onChange,
-    } = this.props;
+    const { id, options, value, onChange } = this.props;
     return (
       <span>
-        {options.map(o => {
-          const isChecked=value.findIndex(v => v.value === o.value) > -1;
-          return (
-            <span key={o.value}>
-              <input
-                id={o.value}
-                type="checkbox"
-                value={o.value}
-                onChange={onChange}
-                checked={isChecked}
-              />
-              <label htmlFor={o.value}>{o.name}</label>
-            </span>
-          )
-        })
+        {
+          options.map(o => {
+            const isChecked = value ? value.some(v => v.value === o.value) : false;
+            const ctrlId = `${id}.${o.value}`;
+            return (
+              <span key={o.value}>
+                <input
+                  id={ctrlId}
+                  type="checkbox"
+                  value={o.value}
+                  onChange={e => this.toggleCheckbox(o)}
+                  checked={isChecked}
+                />
+                <label htmlFor={ctrlId}>{o.name}</label>
+              </span>
+            )
+          })
         }
       </span>
     );

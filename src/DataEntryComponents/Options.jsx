@@ -3,6 +3,16 @@ import CheckboxList from './CheckboxList';
 import Lookup from './Lookup';
 import AjaxLookup from './AjaxLookup';
 
+const Options = (props) => {
+  if (props.multi === true)
+    return <CheckboxList {...props} />
+
+  if (Array.isArray(props.options))
+    return <Lookup {...props} />
+  
+    return <AjaxLookup {...props} />
+}
+export default Options;
 // let itemStatements = {
 //   id: 1,
 //   description: "languages",
@@ -28,14 +38,3 @@ import AjaxLookup from './AjaxLookup';
 //   multi: false,
 //   options: { url: "/.../lookup" }
 // }
-
-const Options = (props) => {
-  if (props.multi === true)
-    return <CheckboxList {...props} />
-
-  if (Array.isArray(options))
-    return <Lookup id={fieldTypeId} description={description} options={options} />
-
-    return <AjaxLookup id={fieldTypeId} description={description} options={options} />
-}
-export default Options;
