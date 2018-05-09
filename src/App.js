@@ -3,11 +3,14 @@ import logo from './logo.svg';
 import './App.css';
 
 import Options from './DataEntryComponents/Options'
+import Text from './DataEntryComponents/Text'
 import Field from './DataEntryComponents/Field'
+import Composite from './DataEntryComponents/Composite'
 
 const fieldTypes = {
-  string: <span>a string</span>,
-  Options: Options
+  Options: Options,
+  Text: Text,
+  Composite: Composite
 }
 
 const config = {
@@ -17,14 +20,14 @@ const config = {
       title: "languages",
       type: "Options",
       multi: true,
-      options: [{ value: 1, name: "english" },{ value: 2, name: "french" },{ value: 3, name: "chinese" }]
+      options: [{ value: 1, name: "english" }, { value: 2, name: "french" }, { value: 3, name: "chinese" }]
     },
     {
       id: 2,
       title: "Nutri-score",
       type: "Options",
       multi: false,
-      options: [{ value: 1, name: "A" },{ value: 2, name: "B" },{ value: 3, name: "C" },{ value: 4, name: "D" }]
+      options: [{ value: 1, name: "A" }, { value: 2, name: "B" }, { value: 3, name: "C" }, { value: 4, name: "D" }]
     },
     {
       id: 3,
@@ -32,8 +35,50 @@ const config = {
       type: "Options",
       multi: false,
       options: 'https://some.endpoint.com'
-    }]
+    },
+    {
+      id: 4,
+      title: "Sub Brand",
+      type: "Text",
+      multiline: false
+    },
+    {
+      id: 5,
+      title: "Address",
+      type: "Text",
+      multiline: true
+    },
+    {
+      id: 6,
+      title: "Bulb Specifications",
+      type: "Composite",
+      fields: [
+        {
+          id: 61,
+          title: "Bulb Type",
+          type: "Options",
+          multi: false,
+          options: [{ value: 10, name: "CFL" }, { value: 11, name: "Haldeogen" }]
+        },
+        {
+          id: 62,
+          title: "Dimmable",
+          type: "Options",
+          multi: false,
+          options: [{ value: 10, name: "Dimmable" }, { value: 11, name: "Non-Dimmable" }]
+        },
+        {
+          id: 63,
+          title: "languages",
+          type: "Options",
+          multi: true,
+          options: [{ value: 1, name: "english" }, { value: 2, name: "french" }, { value: 3, name: "chinese" }]
+        },
+      ]
+    }
+  ]
 };
+
 
 
 // ,
@@ -80,7 +125,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-   
+
         <Form
           fieldTypes={fieldTypes}
           initialValues={{}}
