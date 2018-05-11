@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 
 const R = React.createElement;
-
 export default class CompositeField extends Component {
 
-    shouldComponentUpdate(newProps) {
-        return this.props.value!=newProps.value
-        // return JSON.stringify(this.props.value) != JSON.stringify(newProps.value);
-    }
-
+    shouldComponentUpdate(nextProps, nextState) {
+        return true;
+        //this.props.attribute.value!=nextProps.attribute.value;
+        // if (this.state && this.state.value == nextProps.value) {
+        //     return false;
+        // }
     /*add has calc to state and props, to opimise, rather than stringify
-    hashCode = function(str){
+hashCode = function(str){
     var hash = 0;
     if (str.length == 0) return hash;
     for (i = 0; i < str.length; i++) {
@@ -19,16 +19,18 @@ export default class CompositeField extends Component {
         hash = hash & hash; // Convert to 32bit integer
     }
     return hash;
-    }
+}
     */
-    render() {
+    }
 
-        const { fieldTypes, fieldSchema, value, onFieldChange } = this.props;
-        const fieldType = fieldSchema.type || "string";
-        const props = { ...fieldSchema, fieldTypes, value, onFieldChange: value => onFieldChange(fieldSchema.id, value) };
-        const title = fieldSchema.title;
+    render() {
+        console.log(this.props.field.value)
+        const { typeMappings, field, onFieldChange, parentId } = this.props;
+        const fieldType = field.type;
+        const props = { ...field, parentId, typeMappings, onFieldChange: (field, value) => onFieldChange(field, value) };
+        const title = field.name;
         let element = R(
-            fieldTypes[fieldType],
+            typeMappings[fieldType],
             props);
         return (
             <div style={{ marginBottom: '10px' }}>

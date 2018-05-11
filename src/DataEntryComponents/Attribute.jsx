@@ -6,13 +6,19 @@ import React, { Component, PureComponent } from 'react';
 // }
 
 const R = React.createElement;
-export default class Field extends Component {
+export default class Attribute extends Component {
 
-    shouldComponentUpdate(newProps) {
-        return this.props.value != newProps.value;
+    shouldComponentUpdate(nextProps, nextState) {
+        return true;
+        //return this.props.attribute.value!=nextProps.attribute.value;
+        // if (this.state && this.state.value == nextProps.value) {
+        //     return false;
+        // }
+
+        // this.setState({ value: nextProps.value })
+        // return true;
         //return JSON.stringify(this.props.value) != JSON.stringify(newProps.value);
     }
-
 
     /*add has calc to state and props, to opimise, rather than stringify
 hashCode = function(str){
@@ -27,12 +33,13 @@ hashCode = function(str){
 }
     */
     render() {
-        const { fieldTypes, fieldSchema, value, onFieldChange } = this.props;
-        const fieldType = fieldSchema.type || "string";
-        const props = { ...fieldSchema, fieldTypes, value, onFieldChange: value => onFieldChange(fieldSchema.id, value) };
-        const title = fieldSchema.title;
+        console.log(this.props.attribute.value)
+        const { config, attribute, onFieldChange,id } = this.props;
+        const attributeType = attribute.type;
+        const props = { ...attribute, config, id, onFieldChange: value => onFieldChange(this.props.id, value) };
+        const title = attribute.name;
         let element = R(
-            fieldTypes[fieldType],
+            config.typeMappings[attributeType],
             props);
         return (
             <div style={{ marginBottom: '10px' }}>

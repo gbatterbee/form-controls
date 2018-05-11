@@ -1,29 +1,52 @@
 import React, { Fragment } from 'react';
 import CompositeField from './CompositeField'
 
+// "BaseTypeName": "ItemNameText",
+// "descriptionBreakdown": {
+//                     "values": [
+//                         {
+//                             "name": {
+//                                 "id": 1997,
+//                                 "value": "Functional Name"
+//                             },
+//                             "text": "Muesli Crunchy Mixed Cereals"
+//                         },
+//                         {
+//                             "name": {
+//                                 "id": 1998,
+//                                 "value": "Variant"
+//                             },
+//                             "text": "With Dried Apple & Raisins"
+//                         }
+//                     ],
+//                     "id": 184,
+//                     "name": "Description Breakdown"
+//                 },
+
 const Composite = (props) => {
-  var initialValue = props.value || {};
+ const fieldKeys = Object.keys(props.values);
   return (
     <Fragment>
       {
-        props.fields.map(f => {
-          return (
+        fieldKeys.map(k => 
             <CompositeField
-              key={f.id}
-              onFieldChange={(field, value) => props.onFieldChange(getValue(initialValue,f.id, value))   }
-              fieldTypes={props.fieldTypes}
-              value={initialValue[f.id]}
-              fieldSchema={f}
+              key={k}
+              parentId={props.id}
+              field={props.values[k]}
+              typeMappings={props.config.typeMappings}
+              onFieldChange={(field, value) => props.onFieldChange(getValue(props.values,field,value)) }
             />
-          )
-        })
+        )
       }
     </Fragment>
   )
 }
 
-const getValue = (prevValue, field, value) =>{
-  return Object.assign({},prevValue, { [field]: value })
+const getValue = (prevValue, field, value) => {
+  let newValues = JSON.parse(JSON.stringify(prevValue));
+  let itemToUpdate=newValues.find(v=>v.name.id===field);
+  itemToUpdate=Object.assign(itemToUpdate,value);
+  return {values:newValues};
 }
 
 export default Composite;
